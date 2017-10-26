@@ -18,10 +18,20 @@ for iter = 1:num_iters
     %
 
 
+  for iterator = 1:rows(theta)
+    
 
+    thetaX = theta(iterator) - alpha * (1 / m) * sum((X * theta - y).* X(:, iterator));
+    
+    theta(iterator) =  thetaX
+   
+    
+  end
 
+   % same thing
+   % delta = (1 / m * (X * theta - y)' * X)';
 
-
+   % theta = theta - alpha * delta;
 
 
 
