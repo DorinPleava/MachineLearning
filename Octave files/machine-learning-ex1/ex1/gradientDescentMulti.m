@@ -23,15 +23,15 @@ for iter = 1:num_iters
 
     thetaX = theta(iterator) - alpha * (1 / m) * sum((X * theta - y).* X(:, iterator));
     
-    theta(iterator) =  thetaX
+    theta(iterator) =  thetaX;
    
     
   end
 
    % same thing
-   % delta = (1 / m * (X * theta - y)' * X)';
+    %delta = (1 / m * (X * theta - y)' * X)';
 
-   % theta = theta - alpha * delta;
+    %theta = theta - alpha * delta;
 
 
 
