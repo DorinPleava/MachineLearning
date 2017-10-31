@@ -149,11 +149,14 @@ fprintf('\n');
 
 % Estimate the price of a 1650 sq-ft, 3 br house
 % ====================== YOUR CODE HERE ======================
-price = [1, 1.650, 3] *theta; % You should change this
+price = [1, 4478, 5] *theta % You should change this
 
 
 % ============================================================
 
 fprintf(['Predicted price of a 1650 sq-ft, 3 br house ' ...
-         '(using normal equations):\n $%f\n'], price);
+         '(using normal equations):\n $%f\n'], price/10);
 
+plot(X, y, 'rx', 'MarkerSize', 10); % Plot the data
+hold on
+plot(X(:,2), X*theta, '-')
