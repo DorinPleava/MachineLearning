@@ -25,6 +25,8 @@ cost = -y .* log(sig) - (1 - y) .* log(1 - sig);
 
 thetaNoZero = [ [ 0 ]; theta([2:length(theta)]) ];
 
+
+
 J = (1 / m) * sum(cost) + (lambda / (2 * m)) * sum(thetaNoZero .^ 2);
 
 
