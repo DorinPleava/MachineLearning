@@ -62,26 +62,82 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+% Add ones to the X data matrix
+X = [ones(m, 1) X];
+% Convert y from (1-10) class into num_labels vector
+
+yd = eye(num_labels);
+y = yd(y,:);
+ 
+%%% Map from Layer 1 to Layer 2
+a1=X;
+% Coverts to matrix of 5000 examples x 26 thetas
+z2=a1*Theta1';
+% Sigmoid function converts to p between 0 to 1
+a2=sigmoid(z2);
+
+%%% Map from Layer 2 to Layer 3
+% Add ones to the h1 data matrix
+a2=[ones(m, 1) a2];
+% Converts to matrix of 5000 exampls x num_labels 
+z3=a2*Theta2';
+% Sigmoid function converts to p between 0 to 1
+a3=sigmoid(z3);
+
+% Compute cost
+%logisf=(-y)'*log(a3)-(1-y)'*log(1-a3);
+logisf=(-y).*log(a3)-(1-y).*log(1-a3); % Becos y is now a matrix, so use dot product, unlike above
+J=((1/m).*sum(sum(logisf)));	% This line is correct if there is no regularization
+% Try with ...
+%J=((1/m).*sum((logisf)))  
+% That will give J in 10 columns (it has summed m samples), so need to sum again
 
 
+%% Regularized cost
+Theta1s=Theta1(:,2:end);
+Theta2s=Theta2(:,2:end);
+%J=((1/m).*sum(sum(logisf)))+(lambda/(2*m)).*(sum(sum(Theta1s.^2))+sum(sum(Theta2s.^2)));
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+J = J + (lambda/(2*m)).*(sum(sum(Theta1s.^2)) + sum(sum(Theta2s.^2)))
 
 
 % -------------------------------------------------------------
+   
+   
+ for t = 1:m
 
+	% For the input layer, where l=1:
+	a1 = [X(t,:)'];
+
+	% For the hidden layers, where l=2:
+	z2 = Theta1 * a1;
+	a2 = [1; sigmoid(z2)];
+
+	z3 = Theta2 * a2;
+	a3 = sigmoid(z3);
+
+  %output vector of 10 zeros and only one 1 that corresponds to y(t)
+	yy = ([1:num_labels]==y(t))';
+	% For the delta values:
+	delta_3 = a3 - yy;
+
+	delta_2 = (Theta2' * delta_3) .* [1; sigmoidGradient(z2)];
+	delta_2 = delta_2(2:end); % Taking of the bias row
+
+	% delta_1 is not calculated because we do not associate error with the input    
+
+	% Big delta update
+	Theta1_grad = Theta1_grad + delta_2 * a1';
+	Theta2_grad = Theta2_grad + delta_3 * a2';
+end
+   
+%Theta1_grad = (1/m) * Theta1_grad + (lambda/m) * [zeros(size(Theta1, 1), 1) Theta1(:,2:end)];
+%Theta2_grad = (1/m) * Theta2_grad + (lambda/m) * [zeros(size(Theta2, 1), 1) Theta2(:,2:end)];
+   
+   
+   %Theta1_grad = (1/m) * Theta1_grad;
+   %Theta2_grad = (1/m) * Theta2_grad;
+   
 % =========================================================================
 
 % Unroll gradients
