@@ -48,7 +48,26 @@ x = zeros(n, 1);
 %
 %
 
+vocabList = getVocabList();
 
+ for wordFromVocabIndex = 1:length(vocabList)
+            
+   for wordInEmailIndex = 1:length(word_indices)
+            
+    if(word_indices(wordInEmailIndex) == wordFromVocabIndex)
+    
+      x(wordFromVocabIndex) = 1;
+      break
+
+    else
+    
+     x(wordFromVocabIndex) = 0;
+      
+    end   
+      
+  end
+      
+ end
 
 
 
