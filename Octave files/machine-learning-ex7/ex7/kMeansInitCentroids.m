@@ -14,6 +14,20 @@ centroids = zeros(K, size(X, 2));
 %
 
 
+% Randomly reorder the indices of examples
+%randidx = randperm(size(X, 1));
+% Take the first K examples as centroids
+%centroids = X(randidx(1:K), :);
+
+for i = 1:K
+  
+  randomFeatureNumber = randperm(size(X,1),1);
+  
+  #set centroid to that feature
+  centroids(i,:) = X(randomFeatureNumber,:)
+  
+  
+end
 
 
 
